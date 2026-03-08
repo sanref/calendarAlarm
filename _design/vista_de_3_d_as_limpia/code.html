@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1c74e9",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#111821",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Calendario - Vista 3 Días</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
+<div class="relative flex h-screen w-full flex-col overflow-hidden">
+<!-- Header -->
+<header class="flex items-center justify-between bg-white dark:bg-slate-900 px-4 py-3 border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="menu">menu</span>
+<h1 class="text-lg font-bold tracking-tight">Septiembre</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-primary text-sm font-semibold hover:bg-primary/10 px-2 py-1 rounded">Actualizar Eventos</button>
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400" data-icon="search">search</span>
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400" data-icon="settings">settings</span>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium" href="#">Salir</a>
+</div>
+</header>
+<!-- Date Switcher / Day Headers -->
+<div class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+<div class="flex ml-14"> <!-- Offset for time column -->
+<div class="flex-1 flex flex-col items-center py-3 border-b-2 border-primary">
+<span class="text-xs font-bold text-primary uppercase">MIE</span>
+<span class="text-xl font-bold text-primary">18</span>
+</div>
+<div class="flex-1 flex flex-col items-center py-3 border-b-2 border-transparent">
+<span class="text-xs font-bold text-slate-500 uppercase">JUE</span>
+<span class="text-xl font-bold text-slate-700 dark:text-slate-300">19</span>
+</div>
+<div class="flex-1 flex flex-col items-center py-3 border-b-2 border-transparent">
+<span class="text-xs font-bold text-slate-500 uppercase">VIE</span>
+<span class="text-xl font-bold text-slate-700 dark:text-slate-300">20</span>
+</div>
+</div>
+</div>
+<!-- Calendar Grid -->
+<div class="flex-1 overflow-y-auto relative bg-white dark:bg-slate-900">
+<div class="flex min-h-full">
+<!-- Time Column -->
+<div class="w-14 flex flex-col border-r border-slate-100 dark:border-slate-800">
+<div class="h-20 flex items-start justify-center pt-2">
+<span class="text-[10px] font-medium text-slate-400">08:00</span>
+</div>
+<div class="h-20 flex items-start justify-center pt-2 border-t border-slate-50 dark:border-slate-800/50">
+<span class="text-[10px] font-medium text-slate-400">09:00</span>
+</div>
+<div class="h-20 flex items-start justify-center pt-2 border-t border-slate-50 dark:border-slate-800/50">
+<span class="text-[10px] font-medium text-slate-400">10:00</span>
+</div>
+<div class="h-20 flex items-start justify-center pt-2 border-t border-slate-50 dark:border-slate-800/50">
+<span class="text-[10px] font-medium text-slate-400">11:00</span>
+</div>
+<div class="h-20 flex items-start justify-center pt-2 border-t border-slate-50 dark:border-slate-800/50">
+<span class="text-[10px] font-medium text-slate-400">12:00</span>
+</div>
+<div class="h-20 flex items-start justify-center pt-2 border-t border-slate-50 dark:border-slate-800/50">
+<span class="text-[10px] font-medium text-slate-400">13:00</span>
+</div>
+<div class="h-20 flex items-start justify-center pt-2 border-t border-slate-50 dark:border-slate-800/50">
+<span class="text-[10px] font-medium text-slate-400">14:00</span>
+</div>
+<div class="h-20 flex items-start justify-center pt-2 border-t border-slate-50 dark:border-slate-800/50">
+<span class="text-[10px] font-medium text-slate-400">15:00</span>
+</div>
+</div>
+<!-- Grid Columns -->
+<div class="flex-1 flex relative">
+<!-- Column lines background -->
+<div class="absolute inset-0 flex">
+<div class="flex-1 border-r border-slate-100 dark:border-slate-800"></div>
+<div class="flex-1 border-r border-slate-100 dark:border-slate-800"></div>
+<div class="flex-1"></div>
+</div>
+<!-- Horizontal lines background -->
+<div class="absolute inset-0 flex flex-col">
+<div class="h-20 border-b border-slate-50 dark:border-slate-800/50"></div>
+<div class="h-20 border-b border-slate-50 dark:border-slate-800/50"></div>
+<div class="h-20 border-b border-slate-50 dark:border-slate-800/50"></div>
+<div class="h-20 border-b border-slate-50 dark:border-slate-800/50"></div>
+<div class="h-20 border-b border-slate-50 dark:border-slate-800/50"></div>
+<div class="h-20 border-b border-slate-50 dark:border-slate-800/50"></div>
+<div class="h-20 border-b border-slate-50 dark:border-slate-800/50"></div>
+<div class="h-20 border-b border-slate-50 dark:border-slate-800/50"></div>
+</div>
+<!-- Day 1 Events -->
+<div class="flex-1 relative">
+<div class="absolute top-[80px] left-1 right-1 h-[60px] bg-primary/20 border-l-4 border-primary rounded-sm p-1">
+<p class="text-[10px] font-bold text-primary leading-tight">Sync de Equipo</p>
+<p class="text-[9px] text-primary/80">09:00 - 10:00</p>
+</div>
+<div class="absolute top-[240px] left-1 right-1 h-[120px] bg-emerald-500/20 border-l-4 border-emerald-500 rounded-sm p-1">
+<p class="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 leading-tight">Almuerzo Networking</p>
+<p class="text-[9px] text-emerald-600/80">11:00 - 13:00</p>
+</div>
+</div>
+<!-- Day 2 Events -->
+<div class="flex-1 relative">
+<div class="absolute top-[160px] left-1 right-1 h-[80px] bg-amber-500/20 border-l-4 border-amber-500 rounded-sm p-1">
+<p class="text-[10px] font-bold text-amber-700 dark:text-amber-400 leading-tight">Revisión Proyecto X</p>
+<p class="text-[9px] text-amber-600/80">10:00 - 11:00</p>
+</div>
+</div>
+<!-- Day 3 Events -->
+<div class="flex-1 relative">
+<div class="absolute top-[0px] left-1 right-1 h-[160px] bg-purple-500/20 border-l-4 border-purple-500 rounded-sm p-1">
+<p class="text-[10px] font-bold text-purple-700 dark:text-purple-400 leading-tight">Taller de Diseño UI</p>
+<p class="text-[9px] text-purple-600/80">08:00 - 10:00</p>
+</div>
+<div class="absolute top-[320px] left-1 right-1 h-[60px] bg-rose-500/20 border-l-4 border-rose-500 rounded-sm p-1">
+<p class="text-[10px] font-bold text-rose-700 dark:text-rose-400 leading-tight">Cierre de Sprint</p>
+<p class="text-[9px] text-rose-600/80">12:00 - 13:00</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Current Time Indicator (Visual Mock) -->
+<div class="absolute top-[140px] left-14 right-0 border-t-2 border-rose-500 z-10 flex items-center">
+<div class="size-2 rounded-full bg-rose-500 -ml-1"></div>
+</div>
+</div>
+<!-- FAB (Add Event) -->
+<button class="absolute bottom-20 right-4 size-14 bg-primary text-white rounded-2xl shadow-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</button>
+<!-- Bottom Navigation Bar -->
+<nav class="flex border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pb-6 pt-2">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_view_day">calendar_view_day</span>
+<p class="text-[10px] font-medium leading-normal">Día</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_view_week">calendar_view_week</span>
+<p class="text-[10px] font-medium leading-normal">3 Días</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<p class="text-[10px] font-medium leading-normal">Mes</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined" data-icon="view_agenda">view_agenda</span>
+<p class="text-[10px] font-medium leading-normal">Agenda</p>
+</a>
+</nav>
+</div>
+</body></html>

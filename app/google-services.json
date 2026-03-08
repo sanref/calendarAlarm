@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "749537515351",
+    "project_id": "calendaralarm-489018",
+    "storage_bucket": "calendaralarm-489018.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:749537515351:android:db145e39f9c08429a5d012",
+        "android_client_info": {
+          "package_name": "com.racso.calendaralarm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "749537515351-t4ueffecrpqeepq8giufg5fp2dm6sjj2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.racso.calendaralarm",
+            "certificate_hash": "b1600804118b65ecd4b5fed32c5652a3bcf3f449"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhhmsYi9DsTlgx_7_jA-e2qwgwRfqFaow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

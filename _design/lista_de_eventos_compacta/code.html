@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#1c74e9",
+              "background-light": "#f6f7f8",
+              "background-dark": "#111821",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<title>Event Calendar</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Mobile Screen Wrapper -->
+<div class="relative flex h-full min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden pb-20">
+<!-- Header -->
+<header class="sticky top-0 z-10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-4">
+<div class="flex items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<button class="flex items-center justify-center p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-primary">
+<span class="material-symbols-outlined">sync</span>
+</button>
+<h1 class="text-lg font-bold tracking-tight">Actualizar Eventos</h1>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
+<span class="material-symbols-outlined">calendar_view_day</span>
+</button>
+<button class="ml-2 px-3 py-1 text-sm font-semibold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg">
+                        Salir
+                    </button>
+</div>
+</div>
+</header>
+<!-- Quick Controls -->
+<!-- Event List -->
+<main class="flex flex-col gap-6 px-4">
+<!-- Day Group: Today -->
+<section>
+<h3 class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest mb-3">Today</h3>
+<div class="flex flex-col gap-3">
+<!-- Event Card 1 -->
+<div class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 flex gap-4 items-center">
+<div class="flex flex-col items-center justify-center min-w-[60px] py-1 border-r border-slate-100 dark:border-slate-700 pr-4">
+<span class="text-xs font-medium text-slate-400">10:00</span>
+<span class="text-xs font-medium text-slate-400">AM</span>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-base">Team Sync</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">location_on</span>
+                                Conference Room A
+                            </p>
+</div>
+</div>
+<!-- Event Card 2 -->
+<div class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 flex gap-4 items-center">
+<div class="flex flex-col items-center justify-center min-w-[60px] py-1 border-r border-slate-100 dark:border-slate-700 pr-4">
+<span class="text-xs font-medium text-slate-400">01:30</span>
+<span class="text-xs font-medium text-slate-400">PM</span>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-base">Product Review</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">videocam</span>
+                                Zoom Call
+                            </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Day Group: Tomorrow -->
+<section>
+<h3 class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest mb-3">Tomorrow</h3>
+<div class="flex flex-col gap-3">
+<!-- Event Card 3 -->
+<div class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 flex gap-4 items-center">
+<div class="flex flex-col items-center justify-center min-w-[60px] py-1 border-r border-slate-100 dark:border-slate-700 pr-4">
+<span class="text-xs font-medium text-slate-400">09:00</span>
+<span class="text-xs font-medium text-slate-400">AM</span>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-base">Breakfast Client Meeting</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">restaurant</span>
+                                Blue Bottle Coffee
+                            </p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 border-t border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-background-dark/90 backdrop-blur-md px-4 pb-6 pt-2">
+<div class="flex justify-between items-center max-w-md mx-auto">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">format_list_bulleted</span>
+<p class="text-[10px] font-bold">Events</p>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">check_box</span>
+<p class="text-[10px] font-medium">Tasks</p>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<p class="text-[10px] font-medium">Calendar</p>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">person</span>
+<p class="text-[10px] font-medium">Profile</p>
+</a>
+</div>
+</nav>
+</div>
+</body></html>
