@@ -1,0 +1,38 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <!-- Frame -->
+    <path
+        android:fillColor="#5D4037"
+        android:pathData="M10,10 h80 v6 h-80 z" /> <!-- Top Bar -->
+    <path
+        android:fillColor="#5D4037"
+        android:pathData="M10,84 h80 v6 h-80 z" /> <!-- Bottom Bar -->
+    <path
+        android:fillColor="#5D4037"
+        android:pathData="M15,10 v80 h6 v-80 z" /> <!-- Left Bar -->
+    <path
+        android:fillColor="#5D4037"
+        android:pathData="M79,10 v80 h6 v-80 z" /> <!-- Right Bar -->
+
+    <!-- Hanging Bars -->
+    <path
+        android:fillColor="#795548"
+        android:pathData="M35,16 v10 h4 v-10 z" />
+    <path
+        android:fillColor="#795548"
+        android:pathData="M61,16 v10 h4 v-10 z" />
+
+    <!-- Gong -->
+    <path
+        android:fillColor="#212121"
+        android:pathData="M50,25 a25,25 0 1,0 0.1,0 z" /> <!-- Outer Circle -->
+    <path
+        android:fillColor="#FFB300"
+        android:pathData="M50,38 a12,12 0 1,0 0.1,0 z" /> <!-- Inner Circle -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M50,47 a3,3 0 1,0 0.1,0 z" /> <!-- Center Hole -->
+</vector>

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -23,6 +24,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.FormatListBulleted
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.Label
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -31,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -52,6 +55,8 @@ import java.time.temporal.ChronoUnit
 
 private const val WEB_CLIENT_ID = "749537515351-brf4vmkr0s2mpau3qou4q6ln3ho3l9eb.apps.googleusercontent.com"
 private const val CALENDAR_SCOPE = "https://www.googleapis.com/auth/calendar.readonly"
+
+enum class ViewMode { LIST, THREE_DAYS }
 
 class MainActivity : ComponentActivity() {
 
@@ -88,8 +93,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-enum class ViewMode { LIST, THREE_DAYS }
 
 @Composable
 fun AppNavigation() {
@@ -130,7 +133,7 @@ fun MainContent(
     viewModel: CalendarViewModel = viewModel()
 ) {
     var showSettings by remember { mutableStateOf(false) }
-    var viewMode by remember { mutableStateOf(ViewMode.LIST) }
+    var viewMode by remember { mutableStateOf<ViewMode>(ViewMode.LIST) }
 
     Scaffold(
         topBar = {
@@ -139,15 +142,15 @@ fun MainContent(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         if (!showSettings) {
                             Icon(
-                                Icons.Default.CalendarMonth,
+                                painter = painterResource(id = R.drawable.ic_gong),
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(24.dp)
+                                tint = Color.Unspecified,
+                                modifier = Modifier.size(28.dp)
                             )
-                            Spacer(Modifier.width(8.dp))
+                            Spacer(Modifier.width(12.dp))
                         }
                         Text(
-                            text = if (showSettings) "Configuración" else "Schedule",
+                            text = if (showSettings) "Configuración" else "Gong",
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold
                         )
@@ -162,6 +165,9 @@ fun MainContent(
                 },
                 actions = {
                     if (!showSettings) {
+                        IconButton(onClick = { viewModel.loadEvents(); viewModel.loadThreeDayEvents() }) {
+                            Icon(Icons.Default.Sync, contentDescription = "Actualizar", tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
                         IconButton(onClick = {
                             viewMode = if (viewMode == ViewMode.LIST) ViewMode.THREE_DAYS else ViewMode.LIST
                         }) {
@@ -190,7 +196,7 @@ fun MainContent(
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                        horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         NavigationItem(
@@ -205,8 +211,6 @@ fun MainContent(
                             isSelected = viewMode == ViewMode.THREE_DAYS,
                             onClick = { viewMode = ViewMode.THREE_DAYS }
                         )
-                        NavigationItem(icon = Icons.Default.CheckBox, label = "Tasks", isSelected = false, onClick = {})
-                        NavigationItem(icon = Icons.Default.Person, label = "Profile", isSelected = false, onClick = {})
                     }
                 }
             }
@@ -268,10 +272,9 @@ fun MainScreen(
     }
 
     MainScreenContent(
-        email = account.email ?: "",
+        account = account,
         uiState = uiState,
         activeAlarms = activeAlarms,
-        onLoadEvents = { viewModel.loadEvents() },
         onSetAlarm = { event, mins -> viewModel.setAlarmForEvent(event, mins) },
         onCancelAlarm = { event -> viewModel.cancelAlarmForEvent(event) },
         onPermissionResult = { viewModel.loadEvents() }
@@ -280,10 +283,9 @@ fun MainScreen(
 
 @Composable
 fun MainScreenContent(
-    email: String,
+    account: GoogleSignInAccount,
     uiState: CalendarUiState,
     activeAlarms: Map<String, Int>,
-    onLoadEvents: () -> Unit,
     onSetAlarm: (CalendarEvent, Int) -> Unit,
     onCancelAlarm: (CalendarEvent) -> Unit,
     onPermissionResult: () -> Unit
@@ -299,15 +301,29 @@ fun MainScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { onLoadEvents() }) {
-                Icon(Icons.Default.Sync, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
-                Spacer(Modifier.width(8.dp))
-                Text("Actualizar Eventos", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Box(
+                modifier = Modifier
+                    .size(32.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primaryContainer),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    Icons.Default.AccountCircle,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.fillMaxSize()
+                )
             }
-            Text(email, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Spacer(Modifier.width(12.dp))
+            Text(
+                text = account.email ?: "",
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
 
         when (val state = uiState) {
@@ -351,6 +367,7 @@ fun MainScreenContent(
                             CompactEventCard(
                                 event = event,
                                 hasAlarm = alarmMins != null,
+                                alarmMins = alarmMins,
                                 onClick = { selectedEvent = event }
                             )
                         }
@@ -375,6 +392,7 @@ fun MainScreenContent(
 fun CompactEventCard(
     event: CalendarEvent,
     hasAlarm: Boolean,
+    alarmMins: Int? = null,
     onClick: () -> Unit
 ) {
     Card(
@@ -392,15 +410,17 @@ fun CompactEventCard(
         ) {
             Column(
                 modifier = Modifier
-                    .width(60.dp)
-                    .padding(end = 12.dp),
+                    .width(90.dp) // Large enough for all devices
+                    .padding(end = 8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 val timeParts = event.startTime.split(" ").last().split(":")
                 Text(
                     text = "${timeParts[0]}:${timeParts[1]}",
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    textAlign = TextAlign.Center
                 )
                 Text(
                     text = if (timeParts[0].toInt() < 12) "AM" else "PM",
@@ -421,7 +441,7 @@ fun CompactEventCard(
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        Icons.Default.LocationOn,
+                        Icons.AutoMirrored.Filled.Label,
                         contentDescription = null,
                         modifier = Modifier.size(12.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -430,8 +450,28 @@ fun CompactEventCard(
                     Text(
                         text = event.calendarName,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f, fill = false)
                     )
+                    
+                    if (hasAlarm && alarmMins != null) {
+                        Spacer(Modifier.width(8.dp))
+                        Icon(
+                            Icons.Default.Notifications,
+                            contentDescription = null,
+                            modifier = Modifier.size(12.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(Modifier.width(2.dp))
+                        Text(
+                            text = if (alarmMins == 0) "Inicio" else "${alarmMins}m",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
             }
             
@@ -637,7 +677,16 @@ fun EventDetailDialog(
                 }
                 
                 Spacer(Modifier.height(16.dp))
-                Text(event.title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_gong),
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp),
+                        tint = Color.Unspecified
+                    )
+                    Spacer(Modifier.width(12.dp))
+                    Text(event.title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+                }
                 
                 Spacer(Modifier.height(20.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -653,7 +702,7 @@ fun EventDetailDialog(
                 }
                 Spacer(Modifier.height(12.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.LocationOn, contentDescription = null, modifier = Modifier.size(20.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Icon(Icons.AutoMirrored.Filled.Label, contentDescription = null, modifier = Modifier.size(20.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     Spacer(Modifier.width(12.dp))
                     Text(text = "Calendario: ${event.calendarName}", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
                 }
@@ -698,7 +747,10 @@ fun EventDetailDialog(
                     }
                     Spacer(Modifier.width(12.dp))
                     Button(
-                        onClick = { onSetAlarm(tempMins) },
+                        onClick = { 
+                            onSetAlarm(tempMins) 
+                            onDismiss()
+                        },
                         shape = RoundedCornerShape(12.dp),
                         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
                     ) {
@@ -706,25 +758,15 @@ fun EventDetailDialog(
                     }
                 }
                 
-                Spacer(Modifier.height(32.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    OutlinedButton(
-                        onClick = {},
-                        modifier = Modifier.weight(1f),
+                if (alarmMins != null) {
+                    Spacer(Modifier.height(24.dp))
+                    Button(
+                        onClick = { onCancelAlarm(); onDismiss() },
+                        modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp),
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.errorContainer, contentColor = MaterialTheme.colorScheme.error)
                     ) {
-                        Text("Edit", fontWeight = FontWeight.Bold)
-                    }
-                    if (alarmMins != null) {
-                        Button(
-                            onClick = { onCancelAlarm(); onDismiss() },
-                            modifier = Modifier.weight(1f),
-                            shape = RoundedCornerShape(12.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-                        ) {
-                            Text("Delete", fontWeight = FontWeight.Bold)
-                        }
+                        Text("Desactivar Alarma", fontWeight = FontWeight.Bold)
                     }
                 }
             }
@@ -832,9 +874,14 @@ fun SignInScreen(onSignInSuccess: (GoogleSignInAccount) -> Unit) {
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Icon(Icons.Default.CalendarMonth, contentDescription = null, modifier = Modifier.size(80.dp), tint = MaterialTheme.colorScheme.primary)
+            Icon(
+                painter = painterResource(id = R.drawable.ic_gong),
+                contentDescription = null,
+                modifier = Modifier.size(100.dp),
+                tint = Color.Unspecified
+            )
             Spacer(Modifier.height(16.dp))
-            Text("Calendar Alarm", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+            Text("Gong", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(32.dp))
             Button(
                 onClick = { launcher.launch(googleSignInClient.signInIntent) },
@@ -854,6 +901,7 @@ fun EventCardPreview() {
         CompactEventCard(
             event = CalendarEvent("1", "Team Sync", "25/10 10:00", "11:00", 0L, "Conference Room A"),
             hasAlarm = true,
+            alarmMins = 15,
             onClick = {}
         )
     }
@@ -870,10 +918,9 @@ fun MainScreenPreview() {
     
     CalendarAlarmTheme {
         MainScreenContent(
-            email = "usuario@example.com",
+            account = GoogleSignIn.getLastSignedInAccount(LocalContext.current) ?: GoogleSignInAccount.createDefault(),
             uiState = CalendarUiState.Success(sampleEvents),
             activeAlarms = mapOf("1" to 15),
-            onLoadEvents = {},
             onSetAlarm = { _, _ -> },
             onCancelAlarm = {},
             onPermissionResult = {}
